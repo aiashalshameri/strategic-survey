@@ -53,8 +53,8 @@
 </div>
 
 <script>
-// ===== الإعدادات (الخطوة الوحيدة التي تحتاج لصق) =====
-const APPS_URL = 'https://script.google.com/macros/s/AKfycbxV14Jfwt6hQ46taMC2AS0U_MFTA2KVwgjxWhtan6eCFYqZWhdIRmcFGPsQa8Tm35sa3Q/exec';   // ضع رابط /exec هنا
+// ===== الإعدادات =====
+const APPS_URL = 'PASTE_EXEC_URL_HERE';   'https://script.google.com/macros/s/AKfycbxV14Jfwt6hQ46taMC2AS0U_MFTA2KVwgjxWhtan6eCFYqZWhdIRmcFGPsQa8Tm35sa3Q/exec'
 const HEADER_IMAGE_URL = '';               // اختياري: رابط صورة من Imgur
 
 let DATA = null, page = 0;
@@ -72,6 +72,14 @@ function onData(d) { DATA = d; render(); }
 
 const loader = document.createElement('script');
 loader.src = APPS_URL + '?callback=onData';
+loader.onerror = function () {
+  app.innerHTML = '<div class="card">تعذر الاتصال بخادم الاستبيان من هذه الشبكة. جرّب تشغيل تطبيق الحماية (مثل Psiphon) ثم أعد فتح الصفحة.</div>';
+};
+setTimeout(function () {
+  if (!DATA) {
+    app.innerHTML = '<div class="card">انتهت مهلة تحميل الاستبيان. تأكد من اتصال الإنترنت أو جرّب تشغيل Psiphon ثم أعد المحاولة.</div>';
+  }
+}, 15000);
 document.body.appendChild(loader);
 
 app.addEventListener('change', function (e) {
